@@ -3,7 +3,7 @@
 A coin maximization tool for a farming/harvest game with fertilizer mechanics.
 
 ## 🚀 Live Site
-**[Open the app →](https://YOUR-USERNAME.github.io/harvest-optimizer/)**
+**[Open the app →](https://gogit2194.github.io/Clash-of-Critters-Cozy-Farm/)**
 
 ## 🛠 Tools Included
 
