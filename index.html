@@ -1,83 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🌾 Harvest Optimizer</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{background:#08080f;font-family:'Courier New',monospace;color:#ccd6f6;}
-    ::-webkit-scrollbar{width:6px;}
-    ::-webkit-scrollbar-track{background:#0d0d1a;}
-    ::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:3px;}
-    #nav{
-      display:flex;align-items:center;gap:0;
-      background:#04040a;border-bottom:2px solid #1a1a2a;
-      padding:0 18px;position:sticky;top:0;z-index:100;
-    }
-    #nav .brand{
-      font-size:14px;font-weight:bold;color:#e5c100;
-      letter-spacing:3px;padding:14px 20px 14px 0;
-      border-right:1px solid #1a1a2a;margin-right:16px;
-      white-space:nowrap;
-    }
-    .nav-btn{
-      padding:14px 20px;background:transparent;border:none;
-      border-bottom:3px solid transparent;
-      color:#444;font-family:'Courier New',monospace;
-      font-size:11px;font-weight:bold;cursor:pointer;
-      letter-spacing:1px;transition:all 0.15s;white-space:nowrap;
-    }
-    .nav-btn:hover{color:#888;}
-    .nav-btn.active-opt{color:#64ffda;border-bottom-color:#64ffda;}
-    .nav-btn.active-man{color:#c084fc;border-bottom-color:#c084fc;}
-    #app-container{min-height:calc(100vh - 50px);}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🌾 收获优化器</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#08080f;font-family:'Courier New',monospace;color:#ccd6f6;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#0d0d1a;}
+::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:3px;}
+#nav{
+display:flex;align-items:center;gap:0;
+background:#04040a;border-bottom:2px solid #1a1a2a;
+padding:0 18px;position:sticky;top:0;z-index:100;
+}
+#nav .brand{
+font-size:14px;font-weight:bold;color:#e5c100;
+letter-spacing:3px;padding:14px 20px 14px 0;
+border-right:1px solid #1a1a2a;margin-right:16px;
+white-space:nowrap;
+}
+.nav-btn{
+padding:14px 20px;background:transparent;border:none;
+border-bottom:3px solid transparent;
+color:#444;font-family:'Courier New',monospace;
+font-size:11px;font-weight:bold;cursor:pointer;
+letter-spacing:1px;transition:all 0.15s;white-space:nowrap;
+}
+.nav-btn:hover{color:#888;}
+.nav-btn.active-opt{color:#64ffda;border-bottom-color:#64ffda;}
+.nav-btn.active-man{color:#c084fc;border-bottom-color:#c084fc;}
+#app-container{min-height:calc(100vh - 50px);}
+</style>
 </head>
 <body>
-
 <div id="nav">
-  <div class="brand">🌾 HARVEST</div>
-  <button class="nav-btn active-opt" id="btn-opt" onclick="switchApp('optimizer')">
-    🌾 OPTIMIZER
-  </button>
-  <button class="nav-btn" id="btn-man" onclick="switchApp('manual')">
-    🧮 MANUAL CALC
-  </button>
+<div class="brand">🌾 收获</div>
+<button class="nav-btn active-opt" id="btn-opt" onclick="switchApp('optimizer')">
+🌾 优化器
+</button>
+<button class="nav-btn" id="btn-man" onclick="switchApp('manual')">
+🧮 手动计算器
+</button>
 </div>
-
 <div id="app-container">
-  <div id="root-optimizer"></div>
-  <div id="root-manual" style="display:none"></div>
+<div id="root-optimizer"></div>
+<div id="root-manual" style="display:none"></div>
 </div>
-
 <script>
-  function switchApp(name){
-    document.getElementById('root-optimizer').style.display = name==='optimizer' ? '' : 'none';
-    document.getElementById('root-manual').style.display    = name==='manual'   ? '' : 'none';
-    document.getElementById('btn-opt').className = 'nav-btn' + (name==='optimizer' ? ' active-opt' : '');
-    document.getElementById('btn-man').className = 'nav-btn' + (name==='manual'    ? ' active-man' : '');
-  }
+function switchApp(name){
+document.getElementById('root-optimizer').style.display = name==='optimizer' ? '' : 'none';
+document.getElementById('root-manual').style.display = name==='manual' ? '' : 'none';
+document.getElementById('btn-opt').className = 'nav-btn' + (name==='optimizer' ? ' active-opt' : '');
+document.getElementById('btn-man').className = 'nav-btn' + (name==='manual' ? ' active-man' : '');
+}
 </script>
-
 <script type="text/babel">
 const { useState, useMemo } = React;
-
-// ── SHARED ──────────────────────────────────────────
+// ── 共享 ──────────────────────────────────────────
 const W100 = [
-  5,21,26.47,30.51,33.82,36.69,39.24,41.55,43.68,45.67,
-  47.53,49.28,50.95,52.54,54.06,55.51,56.92,58.27,59.58,60.85,
-  62.08,63.27,64.43,65.57,66.67,67.75,68.80,69.83,70.84,71.83,
-  72.80,73.75,74.68,75.60,76.50,77.38,78.25,79.11,79.96,80.79,
-  81.61,82.41,83.21,83.99,84.77,85.53,86.29,87.03,87.77,88.50,
-  89.22,89.93,90.63,91.33,92.01,92.69,93.37,94.03,94.69,95.35,
-  95.99,96.64,97.27,97.90,98.52,99.14,99.75,100.36,100.96,101.56,
-  102.15,102.74,103.32,103.90,104.47,105.04,105.60,106.16,106.72,107.27,
-  107.82,108.36,108.90,109.43,109.97,110.50,111.02,111.54,112.06,112.58,
-  113.09,113.60,114.10,114.60,115.10,115.60,116.09,116.58,117.07,117.55,118.03
+5,21,26.47,30.51,33.82,36.69,39.24,41.55,43.68,45.67,
+47.53,49.28,50.95,52.54,54.06,55.51,56.92,58.27,59.58,60.85,
+62.08,63.27,64.43,65.57,66.67,67.75,68.80,69.83,70.84,71.83,
+72.80,73.75,74.68,75.60,76.50,77.38,78.25,79.11,79.96,80.79,
+81.61,82.41,83.21,83.99,84.77,85.53,86.29,87.03,87.77,88.50,
+89.22,89.93,90.63,91.33,92.01,92.69,93.37,94.03,94.69,95.35,
+95.99,96.64,97.27,97.90,98.52,99.14,99.75,100.36,100.96,101.56,
+102.15,102.74,103.32,103.90,104.47,105.04,105.60,106.16,106.72,107.27,
+107.82,108.36,108.90,109.43,109.97,110.50,111.02,111.54,112.06,112.58,
+113.09,113.60,114.10,114.60,115.10,115.60,116.09,116.58,117.07,117.55,118.03
 ];
 const FA=5.027091,FB=15.981579,FC=0.424753;
 function bw(n){if(n<=0)return W100[0];if(n<=100)return W100[Math.round(n)];return FA+FB*Math.pow(n,FC);}
@@ -86,560 +81,513 @@ function mg(n,m){return coins(n+1,m)-coins(n,m);}
 function fmt(n){return n.toLocaleString();}
 const MAX_FERT=1920, SOIL_COUNT=6, TOTAL_RESETS=5;
 const PLANT_TYPES=[
-  {id:"banana",name:"Banana",      emoji:"🍌",animal:"Monkey",animalEmoji:"🐒",color:"#f1c40f"},
-  {id:"dragon",name:"Dragon Fruit",emoji:"🐉",animal:"Frog",  animalEmoji:"🐸",color:"#9b59b6"},
-  {id:"carrot",name:"Carrot",      emoji:"🥕",animal:"Moth",  animalEmoji:"🦋",color:"#e67e22"},
-  {id:"cherry",name:"Cherry",      emoji:"🍒",animal:"Bat",   animalEmoji:"🦇",color:"#e74c3c"},
-  {id:"bamboo",name:"Bamboo",      emoji:"🎋",animal:"Panda", animalEmoji:"🐼",color:"#27ae60"},
+{id:"banana",name:"香蕉", emoji:"🍌",animal:"猴子",animalEmoji:"🐒",color:"#f1c40f"},
+{id:"dragon",name:"火龙果",emoji:"🐉",animal:"青蛙",animalEmoji:"🐸",color:"#9b59b6"},
+{id:"carrot",name:"胡萝卜",emoji:"🥕",animal:"飞蛾",animalEmoji:"🦋",color:"#e67e22"},
+{id:"cherry",name:"樱桃", emoji:"🍒",animal:"蝙蝠",animalEmoji:"🦇",color:"#e74c3c"},
+{id:"bamboo",name:"竹子", emoji:"🎋",animal:"熊猫",animalEmoji:"🐼",color:"#27ae60"},
 ];
-
-// ── OPTIMIZER ───────────────────────────────────────
-// Pure greedy — no lock, every fert goes to best marginal coin return
+// ── 优化器 ───────────────────────────────────────
+// 纯贪心 — 无锁定，每份肥料都给边际金币收益最高的植物
 function optimizeFree(slots, budget){
-  const active=slots.filter(s=>s.plantType&&s.multiplier>0);
-  if(!active.length||budget<=0) return active.map(()=>0);
-  const alloc=active.map(()=>0);
-  let rem=budget;
-  while(rem>0){
-    let best=-Infinity,bi=0;
-    for(let p=0;p<active.length;p++){
-      if(alloc[p]>=MAX_FERT) continue;
-      const g=mg(alloc[p],active[p].multiplier);
-      if(g>best){best=g;bi=p;}
-    }
-    if(best<=0) break;
-    alloc[bi]++;rem--;
-  }
-  return alloc.map((count,p)=>({
-    slot:active[p], count,
-    kg:bw(count),
-    coins:coins(count,active[p].multiplier),
-  }));
+const active=slots.filter(s=>s.plantType&&s.multiplier>0);
+if(!active.length||budget<=0) return active.map(()=>0);
+const alloc=active.map(()=>0);
+let rem=budget;
+while(rem>0){
+let best=-Infinity,bi=0;
+for(let p=0;p<active.length;p++){
+if(alloc[p]>=MAX_FERT) continue;
+const g=mg(alloc[p],active[p].multiplier);
+if(g>best){best=g;bi=p;}
 }
-
+if(best<=0) break;
+alloc[bi]++;rem--;
+}
+return alloc.map((count,p)=>({
+slot:active[p], count,
+kg:bw(count),
+coins:coins(count,active[p].multiplier),
+}));
+}
 const defaultSoils=()=>Array.from({length:SOIL_COUNT},()=>({plantType:null,mult:""}));
 const defaultResets=()=>Array.from({length:TOTAL_RESETS},(_,i)=>({id:i,budget:"",soils:defaultSoils()}));
-
 function SoilRow({slot,idx,onSetPlant,onSetMult,onClear}){
-  const pt=PLANT_TYPES.find(p=>p.id===slot.plantType)||null;
-  const mult=parseFloat(slot.mult)||0;
-  return(
-    <div style={{background:pt?`${pt.color}09`:"#0a0a14",border:`1px solid ${pt?pt.color+"40":"#1a1a2a"}`,borderRadius:"8px",overflow:"hidden",marginBottom:"6px"}}>
-      <div style={{padding:"5px 12px",background:pt?`${pt.color}14`:"#0c0c18",borderBottom:`1px solid ${pt?pt.color+"22":"#111120"}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <span style={{fontSize:"9px",color:"#444",letterSpacing:"1px"}}>🪴 SOIL #{idx+1}</span>
-        {pt&&<button onClick={()=>onClear(idx)} style={{background:"transparent",border:"none",color:"#555",cursor:"pointer",fontSize:"12px",padding:0}}>✕</button>}
-      </div>
-      <div style={{padding:"10px 12px",display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
-        <div style={{display:"flex",gap:"3px"}}>
-          {PLANT_TYPES.map(p=>(
-            <button key={p.id} onClick={()=>onSetPlant(idx,p.id)} title={p.name} style={{padding:"4px 7px",background:slot.plantType===p.id?p.color+"28":"#08080f",border:`1px solid ${slot.plantType===p.id?p.color:"#1e1e2e"}`,borderRadius:"4px",cursor:"pointer",fontSize:"15px"}}>{p.emoji}</button>
-          ))}
-        </div>
-        {pt&&(
-          <div style={{display:"flex",alignItems:"center",gap:"3px"}}>
-            <span style={{fontSize:"10px",color:"#555"}}>×</span>
-            <input type="number" step="1" placeholder="mult" value={slot.mult}
-              onChange={e=>onSetMult(idx,e.target.value)}
-              style={{background:"#08080f",border:`1px solid ${slot.mult?pt.color:"#2a2a3a"}`,color:pt.color,fontFamily:"'Courier New',monospace",fontSize:"16px",fontWeight:"bold",padding:"4px 7px",borderRadius:"4px",width:"72px",outline:"none",textAlign:"center"}}
-            />
-          </div>
-        )}
-        {pt&&!mult&&<span style={{fontSize:"9px",color:"#e74c3c",fontStyle:"italic"}}>set multiplier</span>}
-        {pt&&mult>0&&<span style={{fontSize:"9px",color:"#2a5a4a",marginLeft:"auto"}}>🪙 @67: {fmt(coins(67,mult))} · @1920: {fmt(coins(1920,mult))}</span>}
-        {!pt&&<span style={{fontSize:"9px",color:"#222",fontStyle:"italic"}}>← pick a plant</span>}
-      </div>
-    </div>
-  );
+const pt=PLANT_TYPES.find(p=>p.id===slot.plantType)||null;
+const mult=parseFloat(slot.mult)||0;
+return(
+<div style={{background:pt?`${pt.color}09`:"#0a0a14",border:`1px solid ${pt?pt.color+"40":"#1a1a2a"}`,borderRadius:"8px",overflow:"hidden",marginBottom:"6px"}}>
+<div style={{padding:"5px 12px",background:pt?`${pt.color}14`:"#0c0c18",borderBottom:`1px solid ${pt?pt.color+"22":"#111120"}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+<span style={{fontSize:"9px",color:"#444",letterSpacing:"1px"}}>🪴 土地 #{idx+1}</span>
+{pt&&<button onClick={()=>onClear(idx)} style={{background:"transparent",border:"none",color:"#555",cursor:"pointer",fontSize:"12px",padding:0}}>✕</button>}
+</div>
+<div style={{padding:"10px 12px",display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
+<div style={{display:"flex",gap:"3px"}}>
+{PLANT_TYPES.map(p=>(
+<button key={p.id} onClick={()=>onSetPlant(idx,p.id)} title={p.name} style={{padding:"4px 7px",background:slot.plantType===p.id?p.color+"28":"#08080f",border:`1px solid ${slot.plantType===p.id?p.color:"#1e1e2e"}`,borderRadius:"4px",cursor:"pointer",fontSize:"15px"}}>{p.emoji}</button>
+))}
+</div>
+{pt&&(
+<div style={{display:"flex",alignItems:"center",gap:"3px"}}>
+<span style={{fontSize:"10px",color:"#555"}}>×</span>
+<input type="number" step="1" placeholder="倍率" value={slot.mult}
+onChange={e=>onSetMult(idx,e.target.value)}
+style={{background:"#08080f",border:`1px solid ${slot.mult?pt.color:"#2a2a3a"}`,color:pt.color,fontFamily:"'Courier New',monospace",fontSize:"16px",fontWeight:"bold",padding:"4px 7px",borderRadius:"4px",width:"72px",outline:"none",textAlign:"center"}}
+/>
+</div>
+)}
+{pt&&!mult&&<span style={{fontSize:"9px",color:"#e74c3c",fontStyle:"italic"}}>请输入倍率</span>}
+{pt&&mult>0&&<span style={{fontSize:"9px",color:"#2a5a4a",marginLeft:"auto"}}>🪙 @67: {fmt(coins(67,mult))} · @1920: {fmt(coins(1920,mult))}</span>}
+{!pt&&<span style={{fontSize:"9px",color:"#222",fontStyle:"italic"}}>← 请选择植物</span>}
+</div>
+</div>
+);
 }
-
 function OptimizerApp(){
-  const [tab,setTab]=useState("setup");
-  const [resets,setResets]=useState(defaultResets());
-  const [activeReset,setActiveReset]=useState(0);
-
-  const updateSoil=(ri,si,field,val)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{...s,[field]:val})}));
-  const setSoilPlant=(ri,si,typeId)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:typeId,mult:s.mult})}));
-  const clearSoil=(ri,si)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:null,mult:""})}));
-  const copySoils=(from,to)=>setResets(p=>p.map((r,i)=>i!==to?r:{...r,soils:p[from].soils.map(s=>({...s}))}));
-  const updateBudget=(ri,v)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,budget:v}));
-
-  function enrichSlots(soils){
-    return soils.map((s,i)=>{
-      const pt=PLANT_TYPES.find(p=>p.id===s.plantType)||null;
-      const mult=parseFloat(s.mult)||0;
-      return{...s,id:i,plantType:pt,multiplier:mult};
-    });
-  }
-
-  const results=useMemo(()=>resets.map(r=>{
-    const budget=parseInt(r.budget)||0;
-    const slots=enrichSlots(r.soils);
-    const plan=optimizeFree(slots,budget);
-    const totalCoins=plan.reduce((s,x)=>s+x.coins,0);
-    const totalFert=plan.reduce((s,x)=>s+x.count,0);
-    const totalKg=plan.reduce((s,x)=>s+x.kg,0);
-    const filledCount=slots.filter(s=>s.plantType&&s.multiplier>0).length;
-
-    const minAlloc=plan.length>0?Math.min(...plan.map(x=>x.count)):0;
-    const allAbove67=plan.length>0&&plan.every(x=>x.count>=67);
-
-    return{plan,totalCoins,totalFert,totalKg,budget,filledCount,minAlloc,allAbove67};
-  }),[resets]);
-
-  const grandCoins=results.reduce((s,r)=>s+r.totalCoins,0);
-  const grandFert=results.reduce((s,r)=>s+r.totalFert,0);
-
-  const TABS=[
-    {id:"setup",label:"🪴 SETUP",color:"#f1c40f"},
-    {id:"plan", label:"🪙 PLAN", color:"#e5c100"},
-  ];
-
-  return(
-    <div style={{minHeight:"100vh",background:"#08080f",fontFamily:"'Courier New',monospace",color:"#ccd6f6"}}>
-
-      {/* Header */}
-      <div style={{background:"linear-gradient(90deg,#08080f,#0c1624,#08080f)",borderBottom:"1px solid #1a2a3a",padding:"13px 18px",display:"flex",alignItems:"center",gap:"12px"}}>
-        <span style={{fontSize:"24px"}}>🌾</span>
-        <div>
-          <div style={{fontSize:"15px",fontWeight:"bold",color:"#64ffda",letterSpacing:"3px"}}>HARVEST OPTIMIZER</div>
-          <div style={{fontSize:"9px",color:"#2a5a4a",letterSpacing:"2px"}}>FREE OPTIMIZER — NO LOCK — PURE COIN MAXIMIZATION</div>
-        </div>
-        {grandCoins>0&&(
-          <div style={{marginLeft:"auto",textAlign:"right"}}>
-            <div style={{fontSize:"13px",color:"#e5c100",fontWeight:"bold"}}>🪙 {fmt(grandCoins)}</div>
-            <div style={{fontSize:"9px",color:"#2a5a4a"}}>{fmt(grandFert)} fert total</div>
-          </div>
-        )}
-      </div>
-
-      {/* Tabs */}
-      <div style={{display:"flex",padding:"12px 14px 0",gap:"4px",borderBottom:"1px solid #111120"}}>
-        {TABS.map(t=>(
-          <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"8px 14px",background:tab===t.id?t.color+"18":"transparent",border:`1px solid ${tab===t.id?t.color:"#1e1e2e"}`,borderBottom:tab===t.id?`2px solid ${t.color}`:"1px solid #1e1e2e",color:tab===t.id?t.color:"#333",fontFamily:"'Courier New',monospace",fontSize:"10px",fontWeight:"bold",cursor:"pointer",letterSpacing:"1px",borderRadius:"4px 4px 0 0",transition:"all 0.15s"}}>{t.label}</button>
-        ))}
-      </div>
-
-      <div style={{maxWidth:"860px",margin:"0 auto",padding:"18px 14px"}}>
-
-        {/* ══ SETUP ══ */}
-        {tab==="setup"&&(
-          <div>
-            <div style={{background:"#0c1a0c",border:"1px solid #2a5a2a",borderRadius:"6px",padding:"10px 14px",marginBottom:"14px",fontSize:"10px",color:"#64ffda",lineHeight:"1.7"}}>
-              📌 Pick a plant + enter its multiplier per soil. Set your fertilizer budget per reset.<br/>
-              The optimizer will freely split the budget for <span style={{color:"#e5c100"}}>maximum coins</span> — no minimums enforced.
-            </div>
-            {resets.map((reset,ri)=>{
-              const res=results[ri];
-              const hasResult=res.plan.length>0&&res.budget>0;
-              return(
-                <div key={ri} style={{background:"#0c0c18",border:`1px solid ${hasResult?"#64ffda22":"#1a1a2a"}`,borderRadius:"8px",marginBottom:"14px",overflow:"hidden"}}>
-                  <div style={{padding:"10px 14px",background:hasResult?"linear-gradient(90deg,#0c1e18,#08080f)":"#0a0a14",borderBottom:"1px solid #111120",display:"flex",alignItems:"center",gap:"10px",flexWrap:"wrap"}}>
-                    <div style={{color:"#64ffda",fontWeight:"bold",fontSize:"13px",letterSpacing:"2px"}}>RESET {ri+1}</div>
-                    <div style={{fontSize:"9px",color:"#2a5a4a"}}>{ri*12}h → {(ri+1)*12}h</div>
-                    <div style={{display:"flex",alignItems:"center",gap:"6px",marginLeft:"auto"}}>
-                      <span style={{fontSize:"9px",color:"#555"}}>💊 BUDGET:</span>
-                      <input type="number" placeholder="e.g. 900" value={reset.budget} onChange={e=>updateBudget(ri,e.target.value)}
-                        style={{background:"#08080f",border:`1px solid ${reset.budget?"#64ffda":"#1e1e2e"}`,color:"#64ffda",fontFamily:"'Courier New',monospace",fontSize:"15px",fontWeight:"bold",padding:"4px 8px",borderRadius:"4px",width:"90px",outline:"none",textAlign:"center"}}
-                      />
-                    </div>
-                    {hasResult&&(
-                      <div style={{display:"flex",gap:"10px",fontSize:"10px"}}>
-                        <span style={{color:"#3498db"}}>💊 {res.totalFert}</span>
-                        <span style={{color:"#e5c100",fontWeight:"bold"}}>🪙 {fmt(res.totalCoins)}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div style={{padding:"12px"}}>
-                    {reset.soils.map((slot,si)=>(
-                      <SoilRow key={si} slot={slot} idx={si}
-                        onSetPlant={(i,t)=>setSoilPlant(ri,i,t)}
-                        onSetMult={(i,v)=>updateSoil(ri,i,"mult",v)}
-                        onClear={(i)=>clearSoil(ri,i)}
-                      />
-                    ))}
-                    {ri>0&&(
-                      <button onClick={()=>copySoils(ri-1,ri)} style={{marginTop:"6px",padding:"5px 12px",background:"transparent",border:"1px dashed #2a2a3a",color:"#444",fontFamily:"'Courier New',monospace",fontSize:"9px",cursor:"pointer",borderRadius:"4px"}}>
-                        ↑ COPY LAYOUT FROM RESET {ri}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* ══ PLAN ══ */}
-        {tab==="plan"&&(
-          <div>
-            {grandCoins>0&&(
-              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"8px",marginBottom:"14px"}}>
-                {[
-                  {label:"TOTAL COINS",  val:`🪙 ${fmt(grandCoins)}`,color:"#e5c100"},
-                  {label:"TOTAL FERT",   val:fmt(grandFert),          color:"#3498db"},
-                  {label:"COINS / FERT", val:grandFert>0?(grandCoins/grandFert).toFixed(1):"—",color:"#64ffda"},
-                ].map(c=>(
-                  <div key={c.label} style={{background:"#0c0c18",border:`1px solid ${c.color}2a`,borderRadius:"6px",padding:"12px",textAlign:"center"}}>
-                    <div style={{fontSize:"18px",fontWeight:"bold",color:c.color,margin:"3px 0"}}>{c.val}</div>
-                    <div style={{fontSize:"8px",color:"#333",letterSpacing:"1px"}}>{c.label}</div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Reset pills */}
-            <div style={{display:"flex",gap:"6px",marginBottom:"12px",flexWrap:"wrap"}}>
-              {resets.map((r,ri)=>{
-                const res=results[ri];
-                const ok=res.plan.length>0&&res.budget>0;
-                const isActive=activeReset===ri;
-                return(
-                  <button key={ri} onClick={()=>setActiveReset(ri)} style={{padding:"6px 12px",background:isActive?"#e5c10022":ok?"#1a1400":"#0a0a14",border:`1px solid ${isActive?"#e5c100":ok?"#4a3a00":"#1a1a2a"}`,color:isActive?"#e5c100":ok?"#8a7a00":"#333",fontFamily:"'Courier New',monospace",fontSize:"10px",fontWeight:"bold",cursor:"pointer",borderRadius:"4px"}}>
-                    R{ri+1}
-                    {ok&&<span style={{marginLeft:"5px",fontSize:"8px",opacity:0.8}}>🪙{fmt(res.totalCoins)}</span>}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Active reset detail */}
-            {(()=>{
-              const ri=activeReset;
-              const res=results[ri];
-              if(!res.budget||res.plan.length===0) return(
-                <div style={{background:"#0c0c18",border:"1px dashed #1a1a2a",borderRadius:"8px",padding:"40px",textAlign:"center",color:"#222",fontSize:"11px"}}>
-                  ← Set up plants + budget for Reset {ri+1}
-                </div>
-              );
-
-              const budget=parseInt(resets[ri].budget)||0;
-              const unused=budget-res.totalFert;
-
-              return(
-                <div style={{background:"#0c0c18",border:"1px solid #e5c10022",borderRadius:"8px",overflow:"hidden"}}>
-                  {/* Header */}
-                  <div style={{padding:"11px 16px",background:"linear-gradient(90deg,#14100a,#08080f)",borderBottom:"1px solid #111120",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:"6px"}}>
-                    <div>
-                      <span style={{color:"#e5c100",fontWeight:"bold",fontSize:"13px",letterSpacing:"2px"}}>RESET {ri+1} PLAN</span>
-                      <span style={{fontSize:"9px",color:"#4a3a00",marginLeft:"10px"}}>{ri*12}h → {(ri+1)*12}h</span>
-                    </div>
-                    <div style={{display:"flex",gap:"14px",fontSize:"10px"}}>
-                      <span style={{color:"#3498db"}}>💊 {res.totalFert}/{budget}</span>
-                      <span style={{color:"#888"}}>⚖ {res.totalKg.toFixed(2)} kg</span>
-                      <span style={{color:"#e5c100",fontWeight:"bold",fontSize:"13px"}}>🪙 {fmt(res.totalCoins)}</span>
-                    </div>
-                  </div>
-
-                  {/* Insight banner */}
-                  <div style={{padding:"8px 16px",background:res.allAbove67?"#0a100a":"#100a00",borderBottom:"1px solid #111120",fontSize:"9px"}}>
-                    {res.allAbove67
-                      ? <span style={{color:"#2a5a4a"}}>✅ Budget ≥ threshold — optimizer naturally gave every plant ≥67 fert. Free = locked result.</span>
-                      : <span style={{color:"#f1c40f"}}>⚡ Low budget — free optimizer concentrated fert on high-mult plants. Min alloc: {res.minAlloc} 💊. Better than forced-67 lock.</span>
-                    }
-                  </div>
-
-                  {/* Plant rows */}
-                  <div style={{padding:"8px 16px"}}>
-                    {[...res.plan].sort((a,b)=>b.coins-a.coins).map(({slot,count,kg,coins:c})=>{
-                      const pt=slot.plantType;
-                      const pct=res.totalCoins>0?(c/res.totalCoins)*100:0;
-                      const budgetPct=budget>0?(count/budget)*100:0;
-                      const below67=count<67;
-                      return(
-                        <div key={slot.id} style={{padding:"10px 0",borderBottom:"1px solid #0d0d1a"}}>
-                          <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
-                            <span style={{fontSize:"20px"}}>{pt.emoji}</span>
-                            <div style={{flex:1}}>
-                              <div style={{fontSize:"12px",color:pt.color,fontWeight:"bold"}}>
-                                {pt.name} <span style={{fontSize:"9px",color:"#333"}}>#{slot.id+1} · {pt.animalEmoji} ×{slot.multiplier}</span>
-                                {below67&&<span style={{fontSize:"8px",color:"#f1c40f",marginLeft:"6px",background:"#f1c40f14",padding:"1px 5px",borderRadius:"3px"}}>below 67</span>}
-                              </div>
-                              <div style={{fontSize:"9px",color:"#444",marginTop:"2px"}}>
-                                {kg.toFixed(2)} kg × {slot.multiplier} = <span style={{color:"#e5c100"}}>{fmt(c)} coins</span>
-                                <span style={{color:"#333",marginLeft:"8px"}}>{budgetPct.toFixed(1)}% of budget</span>
-                              </div>
-                            </div>
-                            <div style={{background:"#3498db14",border:"1px solid #3498db33",borderRadius:"4px",padding:"3px 9px",textAlign:"center"}}>
-                              <div style={{fontSize:"7px",color:"#3498db"}}>💊</div>
-                              <div style={{fontSize:"15px",fontWeight:"bold",color:"#3498db"}}>{count}</div>
-                            </div>
-                            <div style={{background:pt.color+"18",border:`1px solid ${pt.color}44`,borderRadius:"4px",padding:"3px 10px",textAlign:"center",minWidth:"85px"}}>
-                              <div style={{fontSize:"7px",color:pt.color}}>🪙 COINS</div>
-                              <div style={{fontSize:"15px",fontWeight:"bold",color:pt.color}}>{fmt(c)}</div>
-                            </div>
-                          </div>
-                          {/* Coin share bar */}
-                          <div style={{marginTop:"5px",height:"3px",background:"#0d0d1a",borderRadius:"2px",overflow:"hidden"}}>
-                            <div style={{width:`${pct}%`,height:"100%",background:pt.color,opacity:0.5}}/>
-                          </div>
-                        </div>
-                      );
-                    })}
-
-                    {unused>0&&(
-                      <div style={{marginTop:"8px",fontSize:"9px",color:"#444",fontStyle:"italic"}}>
-                        ⚠ {unused} fert unused — all remaining marginal gains reached zero (max fert hit or no plants)
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Nav */}
-                  <div style={{padding:"10px 16px",borderTop:"1px solid #111120",display:"flex",justifyContent:"space-between"}}>
-                    <button onClick={()=>setActiveReset(v=>Math.max(0,v-1))} disabled={ri===0} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===0?"#1a1a2a":"#4a3a00"}`,color:ri===0?"#222":"#8a7a00",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===0?"default":"pointer",borderRadius:"4px"}}>← R{ri}</button>
-                    <button onClick={()=>setActiveReset(v=>Math.min(TOTAL_RESETS-1,v+1))} disabled={ri===TOTAL_RESETS-1} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===TOTAL_RESETS-1?"#1a1a2a":"#4a3a00"}`,color:ri===TOTAL_RESETS-1?"#222":"#8a7a00",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===TOTAL_RESETS-1?"default":"pointer",borderRadius:"4px"}}>R{ri+2} →</button>
-                  </div>
-                </div>
-              );
-            })()}
-
-            <div style={{marginTop:"12px",background:"#0c0c18",border:"1px dashed #1a2a3a",borderRadius:"6px",padding:"11px 14px",fontSize:"10px",color:"#2a5a4a",lineHeight:"1.8"}}>
-              <span style={{color:"#64ffda",fontWeight:"bold"}}>📐 FREE OPTIMIZER LOGIC — </span>
-              No lock. Every 💊 goes to the plant giving the most 🪙 right now.
-              At budget ≥ ~510 (6 plants): naturally reaches 67+ per plant anyway.
-              At budget &lt; ~510: concentrates on high-mult plants — <span style={{color:"#f1c40f"}}>real gains vs forced lock</span>.
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+const [tab,setTab]=useState("setup");
+const [resets,setResets]=useState(defaultResets());
+const [activeReset,setActiveReset]=useState(0);
+const updateSoil=(ri,si,field,val)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{...s,[field]:val})}));
+const setSoilPlant=(ri,si,typeId)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:typeId,mult:s.mult})}));
+const clearSoil=(ri,si)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:null,mult:""})}));
+const copySoils=(from,to)=>setResets(p=>p.map((r,i)=>i!==to?r:{...r,soils:p[from].soils.map(s=>({...s}))}));
+const updateBudget=(ri,v)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,budget:v}));
+function enrichSlots(soils){
+return soils.map((s,i)=>{
+const pt=PLANT_TYPES.find(p=>p.id===s.plantType)||null;
+const mult=parseFloat(s.mult)||0;
+return{...s,id:i,plantType:pt,multiplier:mult};
+});
 }
-
-// ── MANUAL CALCULATOR ───────────────────────────────
+const results=useMemo(()=>resets.map(r=>{
+const budget=parseInt(r.budget)||0;
+const slots=enrichSlots(r.soils);
+const plan=optimizeFree(slots,budget);
+const totalCoins=plan.reduce((s,x)=>s+x.coins,0);
+const totalFert=plan.reduce((s,x)=>s+x.count,0);
+const totalKg=plan.reduce((s,x)=>s+x.kg,0);
+const filledCount=slots.filter(s=>s.plantType&&s.multiplier>0).length;
+const minAlloc=plan.length>0?Math.min(...plan.map(x=>x.count)):0;
+const allAbove67=plan.length>0&&plan.every(x=>x.count>=67);
+return{plan,totalCoins,totalFert,totalKg,budget,filledCount,minAlloc,allAbove67};
+}),[resets]);
+const grandCoins=results.reduce((s,r)=>s+r.totalCoins,0);
+const grandFert=results.reduce((s,r)=>s+r.totalFert,0);
+const TABS=[
+{id:"setup",label:"🪴 设置",color:"#f1c40f"},
+{id:"plan", label:"🪙 方案", color:"#e5c100"},
+];
+return(
+<div style={{minHeight:"100vh",background:"#08080f",fontFamily:"'Courier New',monospace",color:"#ccd6f6"}}>
+{/* 头部 */}
+<div style={{background:"linear-gradient(90deg,#08080f,#0c1624,#08080f)",borderBottom:"1px solid #1a2a3a",padding:"13px 18px",display:"flex",alignItems:"center",gap:"12px"}}>
+<span style={{fontSize:"24px"}}>🌾</span>
+<div>
+<div style={{fontSize:"15px",fontWeight:"bold",color:"#64ffda",letterSpacing:"3px"}}>收获优化器</div>
+<div style={{fontSize:"9px",color:"#2a5a4a",letterSpacing:"2px"}}>自由优化 — 无锁定 — 纯金币最大化</div>
+</div>
+{grandCoins>0&&(
+<div style={{marginLeft:"auto",textAlign:"right"}}>
+<div style={{fontSize:"13px",color:"#e5c100",fontWeight:"bold"}}>🪙 {fmt(grandCoins)}</div>
+<div style={{fontSize:"9px",color:"#2a5a4a"}}>{fmt(grandFert)} 肥料总计</div>
+</div>
+)}
+</div>
+{/* 标签页 */}
+<div style={{display:"flex",padding:"12px 14px 0",gap:"4px",borderBottom:"1px solid #111120"}}>
+{TABS.map(t=>(
+<button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"8px 14px",background:tab===t.id?t.color+"18":"transparent",border:`1px solid ${tab===t.id?t.color:"#1e1e2e"}`,borderBottom:tab===t.id?`2px solid ${t.color}`:"1px solid #1e1e2e",color:tab===t.id?t.color:"#333",fontFamily:"'Courier New',monospace",fontSize:"10px",fontWeight:"bold",cursor:"pointer",letterSpacing:"1px",borderRadius:"4px 4px 0 0",transition:"all 0.15s"}}>{t.label}</button>
+))}
+</div>
+<div style={{maxWidth:"860px",margin:"0 auto",padding:"18px 14px"}}>
+{/* ══ 设置 ══ */}
+{tab==="setup"&&(
+<div>
+<div style={{background:"#0c1a0c",border:"1px solid #2a5a2a",borderRadius:"6px",padding:"10px 14px",marginBottom:"14px",fontSize:"10px",color:"#64ffda",lineHeight:"1.7"}}>
+📌 为每块土地选择植物并输入其倍率。为每次重置设置肥料预算。<br/>
+优化器将自由分配预算以获得<span style={{color:"#e5c100"}}>最大金币</span> — 不强制任何最低值。
+</div>
+{resets.map((reset,ri)=>{
+const res=results[ri];
+const hasResult=res.plan.length>0&&res.budget>0;
+return(
+<div key={ri} style={{background:"#0c0c18",border:`1px solid ${hasResult?"#64ffda22":"#1a1a2a"}`,borderRadius:"8px",marginBottom:"14px",overflow:"hidden"}}>
+<div style={{padding:"10px 14px",background:hasResult?"linear-gradient(90deg,#0c1e18,#08080f)":"#0a0a14",borderBottom:"1px solid #111120",display:"flex",alignItems:"center",gap:"10px",flexWrap:"wrap"}}>
+<div style={{color:"#64ffda",fontWeight:"bold",fontSize:"13px",letterSpacing:"2px"}}>重置 {ri+1}</div>
+<div style={{fontSize:"9px",color:"#2a5a4a"}}>{ri*12}小时 → {(ri+1)*12}小时</div>
+<div style={{display:"flex",alignItems:"center",gap:"6px",marginLeft:"auto"}}>
+<span style={{fontSize:"9px",color:"#555"}}>💊 预算：</span>
+<input type="number" placeholder="例如 900" value={reset.budget} onChange={e=>updateBudget(ri,e.target.value)}
+style={{background:"#08080f",border:`1px solid ${reset.budget?"#64ffda":"#1e1e2e"}`,color:"#64ffda",fontFamily:"'Courier New',monospace",fontSize:"15px",fontWeight:"bold",padding:"4px 8px",borderRadius:"4px",width:"90px",outline:"none",textAlign:"center"}}
+/>
+</div>
+{hasResult&&(
+<div style={{display:"flex",gap:"10px",fontSize:"10px"}}>
+<span style={{color:"#3498db"}}>💊 {res.totalFert}</span>
+<span style={{color:"#e5c100",fontWeight:"bold"}}>🪙 {fmt(res.totalCoins)}</span>
+</div>
+)}
+</div>
+<div style={{padding:"12px"}}>
+{reset.soils.map((slot,si)=>(
+<SoilRow key={si} slot={slot} idx={si}
+onSetPlant={(i,t)=>setSoilPlant(ri,i,t)}
+onSetMult={(i,v)=>updateSoil(ri,i,"mult",v)}
+onClear={(i)=>clearSoil(ri,i)}
+/>
+))}
+{ri>0&&(
+<button onClick={()=>copySoils(ri-1,ri)} style={{marginTop:"6px",padding:"5px 12px",background:"transparent",border:"1px dashed #2a2a3a",color:"#444",fontFamily:"'Courier New',monospace",fontSize:"9px",cursor:"pointer",borderRadius:"4px"}}>
+↑ 从重置 {ri} 复制布局
+</button>
+)}
+</div>
+</div>
+);
+})}
+</div>
+)}
+{/* ══ 方案 ══ */}
+{tab==="plan"&&(
+<div>
+{grandCoins>0&&(
+<div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"8px",marginBottom:"14px"}}>
+{[
+{label:"金币总计", val:`🪙 ${fmt(grandCoins)}`,color:"#e5c100"},
+{label:"肥料总计", val:fmt(grandFert), color:"#3498db"},
+{label:"金币 / 肥料", val:grandFert>0?(grandCoins/grandFert).toFixed(1):"—",color:"#64ffda"},
+].map(c=>(
+<div key={c.label} style={{background:"#0c0c18",border:`1px solid ${c.color}2a`,borderRadius:"6px",padding:"12px",textAlign:"center"}}>
+<div style={{fontSize:"18px",fontWeight:"bold",color:c.color,margin:"3px 0"}}>{c.val}</div>
+<div style={{fontSize:"8px",color:"#333",letterSpacing:"1px"}}>{c.label}</div>
+</div>
+))}
+</div>
+)}
+{/* 重置切换按钮 */}
+<div style={{display:"flex",gap:"6px",marginBottom:"12px",flexWrap:"wrap"}}>
+{resets.map((r,ri)=>{
+const res=results[ri];
+const ok=res.plan.length>0&&res.budget>0;
+const isActive=activeReset===ri;
+return(
+<button key={ri} onClick={()=>setActiveReset(ri)} style={{padding:"6px 12px",background:isActive?"#e5c10022":ok?"#1a1400":"#0a0a14",border:`1px solid ${isActive?"#e5c100":ok?"#4a3a00":"#1a1a2a"}`,color:isActive?"#e5c100":ok?"#8a7a00":"#333",fontFamily:"'Courier New',monospace",fontSize:"10px",fontWeight:"bold",cursor:"pointer",borderRadius:"4px"}}>
+R{ri+1}
+{ok&&<span style={{marginLeft:"5px",fontSize:"8px",opacity:0.8}}>🪙{fmt(res.totalCoins)}</span>}
+</button>
+);
+})}
+</div>
+{/* 当前重置详情 */}
+{(()=>{
+const ri=activeReset;
+const res=results[ri];
+if(!res.budget||res.plan.length===0) return(
+<div style={{background:"#0c0c18",border:"1px dashed #1a1a2a",borderRadius:"8px",padding:"40px",textAlign:"center",color:"#222",fontSize:"11px"}}>
+← 请为重置 {ri+1} 设置植物和预算
+</div>
+);
+const budget=parseInt(resets[ri].budget)||0;
+const unused=budget-res.totalFert;
+return(
+<div style={{background:"#0c0c18",border:"1px solid #e5c10022",borderRadius:"8px",overflow:"hidden"}}>
+{/* 头部 */}
+<div style={{padding:"11px 16px",background:"linear-gradient(90deg,#14100a,#08080f)",borderBottom:"1px solid #111120",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:"6px"}}>
+<div>
+<span style={{color:"#e5c100",fontWeight:"bold",fontSize:"13px",letterSpacing:"2px"}}>重置 {ri+1} 方案</span>
+<span style={{fontSize:"9px",color:"#4a3a00",marginLeft:"10px"}}>{ri*12}小时 → {(ri+1)*12}小时</span>
+</div>
+<div style={{display:"flex",gap:"14px",fontSize:"10px"}}>
+<span style={{color:"#3498db"}}>💊 {res.totalFert}/{budget}</span>
+<span style={{color:"#888"}}>⚖ {res.totalKg.toFixed(2)} 公斤</span>
+<span style={{color:"#e5c100",fontWeight:"bold",fontSize:"13px"}}>🪙 {fmt(res.totalCoins)}</span>
+</div>
+</div>
+{/* 洞察横幅 */}
+<div style={{padding:"8px 16px",background:res.allAbove67?"#0a100a":"#100a00",borderBottom:"1px solid #111120",fontSize:"9px"}}>
+{res.allAbove67
+? <span style={{color:"#2a5a4a"}}>✅ 预算 ≥ 阈值 — 优化器自然地为每株植物分配了 ≥67 肥料。自由 = 锁定结果。</span>
+: <span style={{color:"#f1c40f"}}>⚡ 低预算 — 自由优化器将肥料集中在高倍率植物上。最小分配：{res.minAlloc} 💊。优于强制 67 锁定。</span>
+}
+</div>
+{/* 植物行 */}
+<div style={{padding:"8px 16px"}}>
+{[...res.plan].sort((a,b)=>b.coins-a.coins).map(({slot,count,kg,coins:c})=>{
+const pt=slot.plantType;
+const pct=res.totalCoins>0?(c/res.totalCoins)*100:0;
+const budgetPct=budget>0?(count/budget)*100:0;
+const below67=count<67;
+return(
+<div key={slot.id} style={{padding:"10px 0",borderBottom:"1px solid #0d0d1a"}}>
+<div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+<span style={{fontSize:"20px"}}>{pt.emoji}</span>
+<div style={{flex:1}}>
+<div style={{fontSize:"12px",color:pt.color,fontWeight:"bold"}}>
+{pt.name} <span style={{fontSize:"9px",color:"#333"}}>#{slot.id+1} · {pt.animalEmoji} ×{slot.multiplier}</span>
+{below67&&<span style={{fontSize:"8px",color:"#f1c40f",marginLeft:"6px",background:"#f1c40f14",padding:"1px 5px",borderRadius:"3px"}}>低于 67</span>}
+</div>
+<div style={{fontSize:"9px",color:"#444",marginTop:"2px"}}>
+{kg.toFixed(2)} 公斤 × {slot.multiplier} = <span style={{color:"#e5c100"}}>{fmt(c)} 金币</span>
+<span style={{color:"#333",marginLeft:"8px"}}>占预算 {budgetPct.toFixed(1)}%</span>
+</div>
+</div>
+<div style={{background:"#3498db14",border:"1px solid #3498db33",borderRadius:"4px",padding:"3px 9px",textAlign:"center"}}>
+<div style={{fontSize:"7px",color:"#3498db"}}>💊</div>
+<div style={{fontSize:"15px",fontWeight:"bold",color:"#3498db"}}>{count}</div>
+</div>
+<div style={{background:pt.color+"18",border:`1px solid ${pt.color}44`,borderRadius:"4px",padding:"3px 10px",textAlign:"center",minWidth:"85px"}}>
+<div style={{fontSize:"7px",color:pt.color}}>🪙 金币</div>
+<div style={{fontSize:"15px",fontWeight:"bold",color:pt.color}}>{fmt(c)}</div>
+</div>
+</div>
+{/* 金币占比条 */}
+<div style={{marginTop:"5px",height:"3px",background:"#0d0d1a",borderRadius:"2px",overflow:"hidden"}}>
+<div style={{width:`${pct}%`,height:"100%",background:pt.color,opacity:0.5}}/>
+</div>
+</div>
+);
+})}
+{unused>0&&(
+<div style={{marginTop:"8px",fontSize:"9px",color:"#444",fontStyle:"italic"}}>
+⚠ {unused} 肥料未使用 — 所有剩余边际收益已达零（已达最大肥料或无植物）
+</div>
+)}
+</div>
+{/* 导航 */}
+<div style={{padding:"10px 16px",borderTop:"1px solid #111120",display:"flex",justifyContent:"space-between"}}>
+<button onClick={()=>setActiveReset(v=>Math.max(0,v-1))} disabled={ri===0} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===0?"#1a1a2a":"#4a3a00"}`,color:ri===0?"#222":"#8a7a00",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===0?"default":"pointer",borderRadius:"4px"}}>← R{ri}</button>
+<button onClick={()=>setActiveReset(v=>Math.min(TOTAL_RESETS-1,v+1))} disabled={ri===TOTAL_RESETS-1} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===TOTAL_RESETS-1?"#1a1a2a":"#4a3a00"}`,color:ri===TOTAL_RESETS-1?"#222":"#8a7a00",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===TOTAL_RESETS-1?"default":"pointer",borderRadius:"4px"}}>R{ri+2} →</button>
+</div>
+</div>
+);
+})()}
+<div style={{marginTop:"12px",background:"#0c0c18",border:"1px dashed #1a2a3a",borderRadius:"6px",padding:"11px 14px",fontSize:"10px",color:"#2a5a4a",lineHeight:"1.8"}}>
+<span style={{color:"#64ffda",fontWeight:"bold"}}>📐 自由优化器逻辑 — </span>
+无锁定。每颗 💊 都分配给当前能产出最多 🪙 的植物。
+当预算 ≥ ~510（6 株植物时）：自然会达到每株 67+。
+当预算 &lt; ~510：集中在高倍率植物上 — <span style={{color:"#f1c40f"}}>相比强制锁定有实际收益</span>。
+</div>
+</div>
+)}
+</div>
+</div>
+);
+}
+// ── 手动计算器 ────────────────────────────────────
 const manDefaultSoils=()=>Array.from({length:SOIL_COUNT},()=>({plantType:null,mult:"",fert:""}));
 const manDefaultResets=()=>Array.from({length:TOTAL_RESETS},(_,i)=>({id:i,soils:manDefaultSoils()}));
-
 function ManSoilRow({slot,idx,onSetPlant,onSetMult,onSetFert,onClear}){
-  const pt=PLANT_TYPES.find(p=>p.id===slot.plantType)||null;
-  const mult=parseFloat(slot.mult)||0;
-  const fert=parseInt(slot.fert)||0;
-  const kg=fert>0?bw(fert):null;
-  const c=fert>0&&mult>0?coins(fert,mult):null;
-
-  return(
-    <div style={{background:pt?`${pt.color}09`:"#0a0a14",border:`1px solid ${pt?pt.color+"40":"#1a1a2a"}`,borderRadius:"8px",overflow:"hidden",marginBottom:"6px"}}>
-      <div style={{padding:"5px 12px",background:pt?`${pt.color}14`:"#0c0c18",borderBottom:`1px solid ${pt?pt.color+"22":"#111120"}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <span style={{fontSize:"9px",color:"#444",letterSpacing:"1px"}}>🪴 SOIL #{idx+1}</span>
-        {pt&&<button onClick={()=>onClear(idx)} style={{background:"transparent",border:"none",color:"#555",cursor:"pointer",fontSize:"12px",padding:0}}>✕</button>}
-      </div>
-      <div style={{padding:"10px 12px",display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
-        {/* Plant picker */}
-        <div style={{display:"flex",gap:"3px"}}>
-          {PLANT_TYPES.map(p=>(
-            <button key={p.id} onClick={()=>onSetPlant(idx,p.id)} title={p.name} style={{padding:"4px 7px",background:slot.plantType===p.id?p.color+"28":"#08080f",border:`1px solid ${slot.plantType===p.id?p.color:"#1e1e2e"}`,borderRadius:"4px",cursor:"pointer",fontSize:"15px"}}>{p.emoji}</button>
-          ))}
-        </div>
-
-        {pt&&(
-          <>
-            {/* Multiplier input */}
-            <div style={{display:"flex",alignItems:"center",gap:"3px"}}>
-              <span style={{fontSize:"10px",color:"#555"}}>×</span>
-              <input type="number" step="1" placeholder="mult" value={slot.mult}
-                onChange={e=>onSetMult(idx,e.target.value)}
-                style={{background:"#08080f",border:`1px solid ${slot.mult?pt.color:"#2a2a3a"}`,color:pt.color,fontFamily:"'Courier New',monospace",fontSize:"16px",fontWeight:"bold",padding:"4px 7px",borderRadius:"4px",width:"70px",outline:"none",textAlign:"center"}}
-              />
-            </div>
-
-            {/* Fertilizer input */}
-            <div style={{display:"flex",alignItems:"center",gap:"3px"}}>
-              <span style={{fontSize:"12px"}}>💊</span>
-              <input type="number" min="0" max="1920" placeholder="fert" value={slot.fert}
-                onChange={e=>onSetFert(idx,e.target.value)}
-                style={{background:"#08080f",border:`1px solid ${slot.fert?"#64ffda":"#2a2a3a"}`,color:"#64ffda",fontFamily:"'Courier New',monospace",fontSize:"16px",fontWeight:"bold",padding:"4px 7px",borderRadius:"4px",width:"78px",outline:"none",textAlign:"center"}}
-              />
-            </div>
-
-            {/* Live result */}
-            {c!==null?(
-              <div style={{marginLeft:"auto",display:"flex",gap:"6px",alignItems:"center"}}>
-                <div style={{background:"#0d0d1a",border:"1px solid #1e1e2e",borderRadius:"6px",padding:"4px 10px",textAlign:"center"}}>
-                  <div style={{fontSize:"8px",color:"#444"}}>⚖ KG</div>
-                  <div style={{fontSize:"13px",fontWeight:"bold",color:"#aaa"}}>{kg.toFixed(2)}</div>
-                </div>
-                <div style={{background:pt.color+"18",border:`1px solid ${pt.color}44`,borderRadius:"6px",padding:"4px 12px",textAlign:"center"}}>
-                  <div style={{fontSize:"8px",color:pt.color}}>🪙 COINS</div>
-                  <div style={{fontSize:"16px",fontWeight:"bold",color:pt.color}}>{fmt(c)}</div>
-                </div>
-              </div>
-            ):(
-              <div style={{marginLeft:"auto",fontSize:"9px",color:"#333",fontStyle:"italic"}}>
-                {!mult?"set multiplier":"enter 💊"}
-              </div>
-            )}
-          </>
-        )}
-        {!pt&&<span style={{fontSize:"9px",color:"#222",fontStyle:"italic"}}>← pick a plant</span>}
-      </div>
-    </div>
-  );
+const pt=PLANT_TYPES.find(p=>p.id===slot.plantType)||null;
+const mult=parseFloat(slot.mult)||0;
+const fert=parseInt(slot.fert)||0;
+const kg=fert>0?bw(fert):null;
+const c=fert>0&&mult>0?coins(fert,mult):null;
+return(
+<div style={{background:pt?`${pt.color}09`:"#0a0a14",border:`1px solid ${pt?pt.color+"40":"#1a1a2a"}`,borderRadius:"8px",overflow:"hidden",marginBottom:"6px"}}>
+<div style={{padding:"5px 12px",background:pt?`${pt.color}14`:"#0c0c18",borderBottom:`1px solid ${pt?pt.color+"22":"#111120"}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+<span style={{fontSize:"9px",color:"#444",letterSpacing:"1px"}}>🪴 土地 #{idx+1}</span>
+{pt&&<button onClick={()=>onClear(idx)} style={{background:"transparent",border:"none",color:"#555",cursor:"pointer",fontSize:"12px",padding:0}}>✕</button>}
+</div>
+<div style={{padding:"10px 12px",display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
+{/* 植物选择器 */}
+<div style={{display:"flex",gap:"3px"}}>
+{PLANT_TYPES.map(p=>(
+<button key={p.id} onClick={()=>onSetPlant(idx,p.id)} title={p.name} style={{padding:"4px 7px",background:slot.plantType===p.id?p.color+"28":"#08080f",border:`1px solid ${slot.plantType===p.id?p.color:"#1e1e2e"}`,borderRadius:"4px",cursor:"pointer",fontSize:"15px"}}>{p.emoji}</button>
+))}
+</div>
+{pt&&(
+<>
+{/* 倍率输入 */}
+<div style={{display:"flex",alignItems:"center",gap:"3px"}}>
+<span style={{fontSize:"10px",color:"#555"}}>×</span>
+<input type="number" step="1" placeholder="倍率" value={slot.mult}
+onChange={e=>onSetMult(idx,e.target.value)}
+style={{background:"#08080f",border:`1px solid ${slot.mult?pt.color:"#2a2a3a"}`,color:pt.color,fontFamily:"'Courier New',monospace",fontSize:"16px",fontWeight:"bold",padding:"4px 7px",borderRadius:"4px",width:"70px",outline:"none",textAlign:"center"}}
+/>
+</div>
+{/* 肥料输入 */}
+<div style={{display:"flex",alignItems:"center",gap:"3px"}}>
+<span style={{fontSize:"12px"}}>💊</span>
+<input type="number" min="0" max="1920" placeholder="肥料" value={slot.fert}
+onChange={e=>onSetFert(idx,e.target.value)}
+style={{background:"#08080f",border:`1px solid ${slot.fert?"#64ffda":"#2a2a3a"}`,color:"#64ffda",fontFamily:"'Courier New',monospace",fontSize:"16px",fontWeight:"bold",padding:"4px 7px",borderRadius:"4px",width:"78px",outline:"none",textAlign:"center"}}
+/>
+</div>
+{/* 实时结果 */}
+{c!==null?(
+<div style={{marginLeft:"auto",display:"flex",gap:"6px",alignItems:"center"}}>
+<div style={{background:"#0d0d1a",border:"1px solid #1e1e2e",borderRadius:"6px",padding:"4px 10px",textAlign:"center"}}>
+<div style={{fontSize:"8px",color:"#444"}}>⚖ 公斤</div>
+<div style={{fontSize:"13px",fontWeight:"bold",color:"#aaa"}}>{kg.toFixed(2)}</div>
+</div>
+<div style={{background:pt.color+"18",border:`1px solid ${pt.color}44`,borderRadius:"6px",padding:"4px 12px",textAlign:"center"}}>
+<div style={{fontSize:"8px",color:pt.color}}>🪙 金币</div>
+<div style={{fontSize:"16px",fontWeight:"bold",color:pt.color}}>{fmt(c)}</div>
+</div>
+</div>
+):(
+<div style={{marginLeft:"auto",fontSize:"9px",color:"#333",fontStyle:"italic"}}>
+{!mult?"请输入倍率":"请输入 💊"}
+</div>
+)}
+</>
+)}
+{!pt&&<span style={{fontSize:"9px",color:"#222",fontStyle:"italic"}}>← 请选择植物</span>}
+</div>
+</div>
+);
 }
-
 function ManualApp(){
-  const [resets,setResets]=useState(manDefaultResets());
-  const [activeReset,setActiveReset]=useState(0);
-
-  const updateSoil=(ri,si,field,val)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{...s,[field]:val})}));
-  const setSoilPlant=(ri,si,typeId)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:typeId,mult:s.mult,fert:s.fert})}));
-  const clearSoil=(ri,si)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:null,mult:"",fert:""})}));
-  const copySoils=(from,to)=>setResets(p=>p.map((r,i)=>i!==to?r:{...r,soils:p[from].soils.map(s=>({...s}))}));
-
-  const results=useMemo(()=>resets.map(r=>{
-    const rows=r.soils.map((s,i)=>{
-      const pt=PLANT_TYPES.find(p=>p.id===s.plantType)||null;
-      const mult=parseFloat(s.mult)||0;
-      const fert=parseInt(s.fert)||0;
-      const kg=fert>0?bw(fert):0;
-      const c=fert>0&&mult>0?coins(fert,mult):0;
-      return{id:i,plantType:pt,multiplier:mult,fert,kg,coins:c};
-    });
-    const filled=rows.filter(x=>x.plantType&&x.multiplier>0&&x.fert>0);
-    const totalCoins=filled.reduce((s,x)=>s+x.coins,0);
-    const totalFert=filled.reduce((s,x)=>s+x.fert,0);
-    const totalKg=filled.reduce((s,x)=>s+x.kg,0);
-    return{rows,filled,totalCoins,totalFert,totalKg};
-  }),[resets]);
-
-  const grandCoins=results.reduce((s,r)=>s+r.totalCoins,0);
-  const grandFert=results.reduce((s,r)=>s+r.totalFert,0);
-
-  return(
-    <div style={{minHeight:"100vh",background:"#08080f",fontFamily:"'Courier New',monospace",color:"#ccd6f6"}}>
-
-      {/* Header */}
-      <div style={{background:"linear-gradient(90deg,#08080f,#1c0c24,#08080f)",borderBottom:"1px solid #2a1a3a",padding:"13px 18px",display:"flex",alignItems:"center",gap:"12px"}}>
-        <span style={{fontSize:"24px"}}>🧮</span>
-        <div>
-          <div style={{fontSize:"15px",fontWeight:"bold",color:"#c084fc",letterSpacing:"3px"}}>MANUAL CALCULATOR</div>
-          <div style={{fontSize:"9px",color:"#5a2a6a",letterSpacing:"2px"}}>NO OPTIMIZER — 100% MANUAL INPUT — FOR COMPARISON</div>
-        </div>
-        {grandCoins>0&&(
-          <div style={{marginLeft:"auto",textAlign:"right"}}>
-            <div style={{fontSize:"13px",color:"#c084fc",fontWeight:"bold"}}>🪙 {fmt(grandCoins)}</div>
-            <div style={{fontSize:"9px",color:"#5a2a6a"}}>{fmt(grandFert)} fert total</div>
-          </div>
-        )}
-      </div>
-
-      <div style={{maxWidth:"860px",margin:"0 auto",padding:"18px 14px"}}>
-
-        {/* Info banner */}
-        <div style={{background:"#140c1a",border:"1px solid #5a2a6a",borderRadius:"6px",padding:"10px 14px",marginBottom:"16px",fontSize:"10px",color:"#c084fc",lineHeight:"1.7"}}>
-          📌 No recommendations here — type in exactly the plant, multiplier, and fertilizer you used per soil per reset.
-          Coins are calculated live so you can compare against the Optimizer's suggestions.
-        </div>
-
-        {/* Grand summary */}
-        {grandCoins>0&&(
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"8px",marginBottom:"16px"}}>
-            {[
-              {label:"TOTAL COINS",  val:`🪙 ${fmt(grandCoins)}`,color:"#c084fc"},
-              {label:"TOTAL FERT",   val:fmt(grandFert),          color:"#3498db"},
-              {label:"COINS / FERT", val:grandFert>0?(grandCoins/grandFert).toFixed(1):"—",color:"#64ffda"},
-            ].map(c=>(
-              <div key={c.label} style={{background:"#0c0c18",border:`1px solid ${c.color}2a`,borderRadius:"6px",padding:"12px",textAlign:"center"}}>
-                <div style={{fontSize:"18px",fontWeight:"bold",color:c.color,margin:"3px 0"}}>{c.val}</div>
-                <div style={{fontSize:"8px",color:"#333",letterSpacing:"1px"}}>{c.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Reset pills (jump to section) */}
-        <div style={{display:"flex",gap:"6px",marginBottom:"14px",flexWrap:"wrap"}}>
-          {resets.map((r,ri)=>{
-            const res=results[ri];
-            const ok=res.filled.length>0;
-            const isActive=activeReset===ri;
-            return(
-              <button key={ri} onClick={()=>setActiveReset(ri)} style={{padding:"6px 12px",background:isActive?"#c084fc22":ok?"#1a0c20":"#0a0a14",border:`1px solid ${isActive?"#c084fc":ok?"#5a2a6a":"#1a1a2a"}`,color:isActive?"#c084fc":ok?"#8a5a9a":"#333",fontFamily:"'Courier New',monospace",fontSize:"10px",fontWeight:"bold",cursor:"pointer",borderRadius:"4px"}}>
-                R{ri+1}
-                {ok&&<span style={{marginLeft:"5px",fontSize:"8px",opacity:0.8}}>🪙{fmt(res.totalCoins)}</span>}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Active reset editor */}
-        {(()=>{
-          const ri=activeReset;
-          const reset=resets[ri];
-          const res=results[ri];
-          return(
-            <div style={{background:"#0c0c18",border:"1px solid #5a2a6a44",borderRadius:"8px",overflow:"hidden"}}>
-              <div style={{padding:"11px 16px",background:"linear-gradient(90deg,#1a0c20,#08080f)",borderBottom:"1px solid #111120",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:"6px"}}>
-                <div>
-                  <span style={{color:"#c084fc",fontWeight:"bold",fontSize:"13px",letterSpacing:"2px"}}>RESET {ri+1}</span>
-                  <span style={{fontSize:"9px",color:"#5a2a6a",marginLeft:"10px"}}>{ri*12}h → {(ri+1)*12}h</span>
-                </div>
-                {res.filled.length>0&&(
-                  <div style={{display:"flex",gap:"14px",fontSize:"10px"}}>
-                    <span style={{color:"#3498db"}}>💊 {fmt(res.totalFert)}</span>
-                    <span style={{color:"#888"}}>⚖ {res.totalKg.toFixed(2)} kg</span>
-                    <span style={{color:"#c084fc",fontWeight:"bold",fontSize:"13px"}}>🪙 {fmt(res.totalCoins)}</span>
-                  </div>
-                )}
-              </div>
-
-              <div style={{padding:"12px"}}>
-                {reset.soils.map((slot,si)=>(
-                  <ManSoilRow key={si} slot={slot} idx={si}
-                    onSetPlant={(i,t)=>setSoilPlant(ri,i,t)}
-                    onSetMult={(i,v)=>updateSoil(ri,i,"mult",v)}
-                    onSetFert={(i,v)=>updateSoil(ri,i,"fert",v)}
-                    onClear={(i)=>clearSoil(ri,i)}
-                  />
-                ))}
-                {ri>0&&(
-                  <button onClick={()=>copySoils(ri-1,ri)} style={{marginTop:"6px",padding:"5px 12px",background:"transparent",border:"1px dashed #2a2a3a",color:"#444",fontFamily:"'Courier New',monospace",fontSize:"9px",cursor:"pointer",borderRadius:"4px"}}>
-                    ↑ COPY LAYOUT FROM RESET {ri}
-                  </button>
-                )}
-              </div>
-
-              {/* Breakdown table */}
-              {res.filled.length>0&&(
-                <div style={{padding:"0 16px 14px"}}>
-                  <div style={{fontSize:"9px",color:"#5a2a6a",letterSpacing:"1px",marginBottom:"8px",marginTop:"6px"}}>BREAKDOWN</div>
-                  {[...res.filled].sort((a,b)=>b.coins-a.coins).map(row=>{
-                    const pt=row.plantType;
-                    const pct=res.totalCoins>0?(row.coins/res.totalCoins)*100:0;
-                    return(
-                      <div key={row.id} style={{padding:"6px 0",borderBottom:"1px solid #0d0d1a"}}>
-                        <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
-                          <span style={{fontSize:"14px"}}>{pt.emoji}</span>
-                          <span style={{fontSize:"11px",color:pt.color,flex:1}}>{pt.name} #{row.id+1}</span>
-                          <span style={{fontSize:"10px",color:"#555"}}>{row.fert} 💊 × {row.multiplier} mult</span>
-                          <span style={{fontSize:"12px",color:"#c084fc",fontWeight:"bold",minWidth:"75px",textAlign:"right"}}>🪙 {fmt(row.coins)}</span>
-                        </div>
-                        <div style={{marginTop:"4px",height:"3px",background:"#0d0d1a",borderRadius:"2px",overflow:"hidden"}}>
-                          <div style={{width:`${pct}%`,height:"100%",background:pt.color,opacity:0.5}}/>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Nav */}
-              <div style={{padding:"10px 16px",borderTop:"1px solid #111120",display:"flex",justifyContent:"space-between"}}>
-                <button onClick={()=>setActiveReset(v=>Math.max(0,v-1))} disabled={ri===0} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===0?"#1a1a2a":"#5a2a6a"}`,color:ri===0?"#222":"#8a5a9a",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===0?"default":"pointer",borderRadius:"4px"}}>← R{ri}</button>
-                <button onClick={()=>setActiveReset(v=>Math.min(TOTAL_RESETS-1,v+1))} disabled={ri===TOTAL_RESETS-1} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===TOTAL_RESETS-1?"#1a1a2a":"#5a2a6a"}`,color:ri===TOTAL_RESETS-1?"#222":"#8a5a9a",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===TOTAL_RESETS-1?"default":"pointer",borderRadius:"4px"}}>R{ri+2} →</button>
-              </div>
-            </div>
-          );
-        })()}
-
-        <div style={{marginTop:"12px",background:"#0c0c18",border:"1px dashed #2a1a3a",borderRadius:"6px",padding:"11px 14px",fontSize:"10px",color:"#5a2a6a",lineHeight:"1.8"}}>
-          <span style={{color:"#c084fc",fontWeight:"bold"}}>📐 FORMULA — </span>
-          Coins = floor(weight × multiplier). Weight fert 0–100: exact in-game data. Fert 101–1920: W(n)=5.027+15.982×n^0.4248
-        </div>
-      </div>
-    </div>
-  );
+const [resets,setResets]=useState(manDefaultResets());
+const [activeReset,setActiveReset]=useState(0);
+const updateSoil=(ri,si,field,val)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{...s,[field]:val})}));
+const setSoilPlant=(ri,si,typeId)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:typeId,mult:s.mult,fert:s.fert})}));
+const clearSoil=(ri,si)=>setResets(p=>p.map((r,i)=>i!==ri?r:{...r,soils:r.soils.map((s,j)=>j!==si?s:{plantType:null,mult:"",fert:""})}));
+const copySoils=(from,to)=>setResets(p=>p.map((r,i)=>i!==to?r:{...r,soils:p[from].soils.map(s=>({...s}))}));
+const results=useMemo(()=>resets.map(r=>{
+const rows=r.soils.map((s,i)=>{
+const pt=PLANT_TYPES.find(p=>p.id===s.plantType)||null;
+const mult=parseFloat(s.mult)||0;
+const fert=parseInt(s.fert)||0;
+const kg=fert>0?bw(fert):0;
+const c=fert>0&&mult>0?coins(fert,mult):0;
+return{id:i,plantType:pt,multiplier:mult,fert,kg,coins:c};
+});
+const filled=rows.filter(x=>x.plantType&&x.multiplier>0&&x.fert>0);
+const totalCoins=filled.reduce((s,x)=>s+x.coins,0);
+const totalFert=filled.reduce((s,x)=>s+x.fert,0);
+const totalKg=filled.reduce((s,x)=>s+x.kg,0);
+return{rows,filled,totalCoins,totalFert,totalKg};
+}),[resets]);
+const grandCoins=results.reduce((s,r)=>s+r.totalCoins,0);
+const grandFert=results.reduce((s,r)=>s+r.totalFert,0);
+return(
+<div style={{minHeight:"100vh",background:"#08080f",fontFamily:"'Courier New',monospace",color:"#ccd6f6"}}>
+{/* 头部 */}
+<div style={{background:"linear-gradient(90deg,#08080f,#1c0c24,#08080f)",borderBottom:"1px solid #2a1a3a",padding:"13px 18px",display:"flex",alignItems:"center",gap:"12px"}}>
+<span style={{fontSize:"24px"}}>🧮</span>
+<div>
+<div style={{fontSize:"15px",fontWeight:"bold",color:"#c084fc",letterSpacing:"3px"}}>手动计算器</div>
+<div style={{fontSize:"9px",color:"#5a2a6a",letterSpacing:"2px"}}>无优化器 — 100% 手动输入 — 用于对比</div>
+</div>
+{grandCoins>0&&(
+<div style={{marginLeft:"auto",textAlign:"right"}}>
+<div style={{fontSize:"13px",color:"#c084fc",fontWeight:"bold"}}>🪙 {fmt(grandCoins)}</div>
+<div style={{fontSize:"9px",color:"#5a2a6a"}}>{fmt(grandFert)} 肥料总计</div>
+</div>
+)}
+</div>
+<div style={{maxWidth:"860px",margin:"0 auto",padding:"18px 14px"}}>
+{/* 信息横幅 */}
+<div style={{background:"#140c1a",border:"1px solid #5a2a6a",borderRadius:"6px",padding:"10px 14px",marginBottom:"16px",fontSize:"10px",color:"#c084fc",lineHeight:"1.7"}}>
+📌 这里没有任何推荐 — 请准确输入每次重置中每块土地所使用的植物、倍率和肥料。
+金币会实时计算，方便你与优化器的建议进行对比。
+</div>
+{/* 汇总 */}
+{grandCoins>0&&(
+<div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"8px",marginBottom:"16px"}}>
+{[
+{label:"金币总计", val:`🪙 ${fmt(grandCoins)}`,color:"#c084fc"},
+{label:"肥料总计", val:fmt(grandFert), color:"#3498db"},
+{label:"金币 / 肥料", val:grandFert>0?(grandCoins/grandFert).toFixed(1):"—",color:"#64ffda"},
+].map(c=>(
+<div key={c.label} style={{background:"#0c0c18",border:`1px solid ${c.color}2a`,borderRadius:"6px",padding:"12px",textAlign:"center"}}>
+<div style={{fontSize:"18px",fontWeight:"bold",color:c.color,margin:"3px 0"}}>{c.val}</div>
+<div style={{fontSize:"8px",color:"#333",letterSpacing:"1px"}}>{c.label}</div>
+</div>
+))}
+</div>
+)}
+{/* 重置切换按钮（跳转至分区） */}
+<div style={{display:"flex",gap:"6px",marginBottom:"14px",flexWrap:"wrap"}}>
+{resets.map((r,ri)=>{
+const res=results[ri];
+const ok=res.filled.length>0;
+const isActive=activeReset===ri;
+return(
+<button key={ri} onClick={()=>setActiveReset(ri)} style={{padding:"6px 12px",background:isActive?"#c084fc22":ok?"#1a0c20":"#0a0a14",border:`1px solid ${isActive?"#c084fc":ok?"#5a2a6a":"#1a1a2a"}`,color:isActive?"#c084fc":ok?"#8a5a9a":"#333",fontFamily:"'Courier New',monospace",fontSize:"10px",fontWeight:"bold",cursor:"pointer",borderRadius:"4px"}}>
+R{ri+1}
+{ok&&<span style={{marginLeft:"5px",fontSize:"8px",opacity:0.8}}>🪙{fmt(res.totalCoins)}</span>}
+</button>
+);
+})}
+</div>
+{/* 当前重置编辑器 */}
+{(()=>{
+const ri=activeReset;
+const reset=resets[ri];
+const res=results[ri];
+return(
+<div style={{background:"#0c0c18",border:"1px solid #5a2a6a44",borderRadius:"8px",overflow:"hidden"}}>
+<div style={{padding:"11px 16px",background:"linear-gradient(90deg,#1a0c20,#08080f)",borderBottom:"1px solid #111120",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:"6px"}}>
+<div>
+<span style={{color:"#c084fc",fontWeight:"bold",fontSize:"13px",letterSpacing:"2px"}}>重置 {ri+1}</span>
+<span style={{fontSize:"9px",color:"#5a2a6a",marginLeft:"10px"}}>{ri*12}小时 → {(ri+1)*12}小时</span>
+</div>
+{res.filled.length>0&&(
+<div style={{display:"flex",gap:"14px",fontSize:"10px"}}>
+<span style={{color:"#3498db"}}>💊 {fmt(res.totalFert)}</span>
+<span style={{color:"#888"}}>⚖ {res.totalKg.toFixed(2)} 公斤</span>
+<span style={{color:"#c084fc",fontWeight:"bold",fontSize:"13px"}}>🪙 {fmt(res.totalCoins)}</span>
+</div>
+)}
+</div>
+<div style={{padding:"12px"}}>
+{reset.soils.map((slot,si)=>(
+<ManSoilRow key={si} slot={slot} idx={si}
+onSetPlant={(i,t)=>setSoilPlant(ri,i,t)}
+onSetMult={(i,v)=>updateSoil(ri,i,"mult",v)}
+onSetFert={(i,v)=>updateSoil(ri,i,"fert",v)}
+onClear={(i)=>clearSoil(ri,i)}
+/>
+))}
+{ri>0&&(
+<button onClick={()=>copySoils(ri-1,ri)} style={{marginTop:"6px",padding:"5px 12px",background:"transparent",border:"1px dashed #2a2a3a",color:"#444",fontFamily:"'Courier New',monospace",fontSize:"9px",cursor:"pointer",borderRadius:"4px"}}>
+↑ 从重置 {ri} 复制布局
+</button>
+)}
+</div>
+{/* 明细表 */}
+{res.filled.length>0&&(
+<div style={{padding:"0 16px 14px"}}>
+<div style={{fontSize:"9px",color:"#5a2a6a",letterSpacing:"1px",marginBottom:"8px",marginTop:"6px"}}>明细</div>
+{[...res.filled].sort((a,b)=>b.coins-a.coins).map(row=>{
+const pt=row.plantType;
+const pct=res.totalCoins>0?(row.coins/res.totalCoins)*100:0;
+return(
+<div key={row.id} style={{padding:"6px 0",borderBottom:"1px solid #0d0d1a"}}>
+<div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+<span style={{fontSize:"14px"}}>{pt.emoji}</span>
+<span style={{fontSize:"11px",color:pt.color,flex:1}}>{pt.name} #{row.id+1}</span>
+<span style={{fontSize:"10px",color:"#555"}}>{row.fert} 💊 × {row.multiplier} 倍率</span>
+<span style={{fontSize:"12px",color:"#c084fc",fontWeight:"bold",minWidth:"75px",textAlign:"right"}}>🪙 {fmt(row.coins)}</span>
+</div>
+<div style={{marginTop:"4px",height:"3px",background:"#0d0d1a",borderRadius:"2px",overflow:"hidden"}}>
+<div style={{width:`${pct}%`,height:"100%",background:pt.color,opacity:0.5}}/>
+</div>
+</div>
+);
+})}
+</div>
+)}
+{/* 导航 */}
+<div style={{padding:"10px 16px",borderTop:"1px solid #111120",display:"flex",justifyContent:"space-between"}}>
+<button onClick={()=>setActiveReset(v=>Math.max(0,v-1))} disabled={ri===0} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===0?"#1a1a2a":"#5a2a6a"}`,color:ri===0?"#222":"#8a5a9a",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===0?"default":"pointer",borderRadius:"4px"}}>← R{ri}</button>
+<button onClick={()=>setActiveReset(v=>Math.min(TOTAL_RESETS-1,v+1))} disabled={ri===TOTAL_RESETS-1} style={{padding:"6px 12px",background:"transparent",border:`1px solid ${ri===TOTAL_RESETS-1?"#1a1a2a":"#5a2a6a"}`,color:ri===TOTAL_RESETS-1?"#222":"#8a5a9a",fontFamily:"'Courier New',monospace",fontSize:"10px",cursor:ri===TOTAL_RESETS-1?"default":"pointer",borderRadius:"4px"}}>R{ri+2} →</button>
+</div>
+</div>
+);
+})()}
+<div style={{marginTop:"12px",background:"#0c0c18",border:"1px dashed #2a1a3a",borderRadius:"6px",padding:"11px 14px",fontSize:"10px",color:"#5a2a6a",lineHeight:"1.8"}}>
+<span style={{color:"#c084fc",fontWeight:"bold"}}>📐 公式 — </span>
+金币 = floor(重量 × 倍率)。重量 肥料 0–100：游戏内精确数据。肥料 101–1920：
+W(n)=5.027+15.982×n^0.4248
+</div>
+</div>
+</div>
+);
 }
-
-// ── MOUNT ────────────────────────────────────────────
+// ── 挂载 ────────────────────────────────────────────
 ReactDOM.createRoot(document.getElementById('root-optimizer')).render(<OptimizerApp/>);
 ReactDOM.createRoot(document.getElementById('root-manual')).render(<ManualApp/>);
 </script>
